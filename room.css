@@ -1,0 +1,36 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    height: 100vw;
+}
+
+.left {
+    position: relative;
+    width: 80vw;
+    height: 100%;
+}
+
+.right {
+    position: relative;
+    width: 20vw;
+}
+
+.room-info {
+    width: 100%;
+    background-color: gray;
+    border-radius: 10px;
+}
+
+#video {
+    width: 80vw;
+}
+
+#room_id, #entry_id_display, #video_title, #user_status {
+    margin: 0;
+}
