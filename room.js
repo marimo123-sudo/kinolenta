@@ -147,20 +147,33 @@ chatInput.addEventListener('keypress', (e) => {
 connectWS();
 
 // Безопасная отправка
+let isSendingCommand = false;
+
+// Модифицируем функцию отправки
 function sendWS(data) {
-  // Главный может отправлять любые команды, не-главный - только чат
   if (!isMain && !data.action.startsWith("chat_")) {
     return;
   }
   
+  if (isSendingCommand) {
+    console.log("⚠️ Команда уже отправляется, пропускаем");
+    return;
+  }
+  
   if (wsReady && ws.readyState === WebSocket.OPEN) {
+    isSendingCommand = true;
     ws.send(JSON.stringify(data));
     console.log('✅ WS данные отправлены:', data);
+    
+    // Сбрасываем флаг через небольшую задержку
+    setTimeout(() => {
+      isSendingCommand = false;
+    }, 100);
   } else {
-    console.warn("⚠️ WS ещё не готов, попробуем через 300мс", data);
-    setTimeout(() => sendWS(data), 300);
+    console.warn("⚠️ WS ещё не готов");
   }
 }
+
 
 // Остальной код управления видео остается без изменений...
 // [остальная часть кода из оригинального room.js]
